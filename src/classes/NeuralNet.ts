@@ -192,13 +192,8 @@ export class NeuralNet {
         return gradient;
     }
 
-    //backpropagate
-    backpropagate(inputs: number[], targetOutput: number[]): void {
-
-        //get gradient
-        const gradient = this.getGradient(inputs, targetOutput);
-
-        //update weights
+    //apply gradient
+    applyGradient(gradient: Gradient): void {
         for (let i = 0; i < this.weights.length; i++) {
             for (let j = 0; j < this.weights[i].length; j++) {
                 for (let k = 0; k < this.weights[i][j].length; k++) {
@@ -206,6 +201,16 @@ export class NeuralNet {
                 }
             }
         }
+    }
+
+    //calculate gradient and apply
+    backpropagate(inputs: number[], targetOutput: number[]): void {
+
+        //get gradient
+        const gradient = this.getGradient(inputs, targetOutput);
+
+        //update weights
+        this.applyGradient(gradient);
     }
 
 }
