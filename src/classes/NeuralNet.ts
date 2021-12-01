@@ -4,6 +4,7 @@ import { squaredError } from '../util/error/squaredError';
 type Weights = number[][][];
 type Biases = number[][];
 type Nodes = number[][];
+type Gradient = number[][][];
 type ActivationFunction = (x: number) => number;
 type ActivationFunctionPrime = (x: number) => number;
 type ErrorFunction = (outputs: number[], targets: number[]) => number;
@@ -82,7 +83,7 @@ export class NeuralNet {
 
     //forward pass
     private forwardPass(inputs: number[]): Nodes {
-
+        
         if (inputs.length !== this.inputLayerNodes) {
             throw new Error(`Inputs do not match input layer nodes. ${inputs.length} !== ${this.inputLayerNodes}`);
         }
@@ -126,7 +127,7 @@ export class NeuralNet {
     }
 
     //calculate gradient
-    getGradient(inputs: number[], targetOutput: number[]) {
+    getGradient(inputs: number[], targetOutput: number[]): Gradient {
 
         //forward pass
         const nodes = this.forwardPass(inputs);
@@ -159,11 +160,11 @@ export class NeuralNet {
         //get the gradient for the hidden layers
         for (let i = this.hiddenLayers; i >= 1; i--) {
             for (let j = 0; j < this.hiddenLayerNodes; j++) {
-                
+
                 //get partial product
                 partialNodes[i][j] = this.weights[i].map(n => n[j]).map((weight, index) => weight * partialNodes[i + 1][index]).reduce((a, b) => a + b);
-                
-                for(let k = 0; k < this.hiddenLayerNodes; k++) {
+
+                for (let k = 0; k < this.hiddenLayerNodes; k++) {
                     gradient[i - 1][j][k] = partialNodes[i][j] * this.activationFunctionPrime(nodes[i][k]) * nodes[i - 1][k];
                 }
             }
@@ -173,7 +174,7 @@ export class NeuralNet {
     }
 
     //backpropagate
-    backpropagate(inputs: number[], targetOutput: number[]) {
+    backpropagate(inputs: number[], targetOutput: number[]): void {
 
         //get gradient
         const gradient = this.getGradient(inputs, targetOutput);
