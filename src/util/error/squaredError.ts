@@ -1,5 +1,5 @@
 //squared error
-export function SquaredError(true_set: number[], predicted_set: number[]): number {
+export function squaredError(true_set: number[], predicted_set: number[]): number {
 
     //if the predicted set is not the same length as the true set, throw an error
     if (true_set.length !== predicted_set.length) throw "The predicted set must be the same length as the true set";

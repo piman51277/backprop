@@ -1,5 +1,5 @@
 import { sigmoid, sigmoidPrime } from '../util/activation/sigmoid';
-import { SquaredError } from '../util/error/squaredError';
+import { squaredError } from '../util/error/squaredError';
 
 type Weights = number[][][];
 type Biases = number[][];
@@ -44,7 +44,7 @@ export class NeuralNet {
         this.outputLayerNodes = options.outputLayerNodes;
         this.activationFunction = options.activationFunction || sigmoid;
         this.activationFunctionPrime = options.activationFunctionPrime || sigmoidPrime;
-        this.errorFunction = options.errorFunction || SquaredError;
+        this.errorFunction = options.errorFunction || squaredError;
         this.learningRate = options.learningRate || 0.1;
 
         //generate weights and biases
