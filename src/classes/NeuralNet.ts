@@ -62,7 +62,7 @@ export class NeuralNet {
     }
 
     //generates a array of random weights for a set input size and output size
-    generateRandomWeights(inputSize: number, outputSize: number): number[][] {
+    private generateRandomWeights(inputSize: number, outputSize: number): number[][] {
         return new Array(inputSize).fill(0).map(() => new Array(outputSize).fill(0).map(() => Math.random()));
     }
 
@@ -89,7 +89,7 @@ export class NeuralNet {
         }
 
         //initialize nodes
-        const nodes: Nodes = new Array(this.hiddenLayers + 1).fill(0).map(() => new Array(this.hiddenLayerNodes).fill(0)).concat([new Array(this.outputLayerNodes).fill(0)]);
+        const nodes: Nodes = new Array(this.hiddenLayers + 2).fill(0).map(() => new Array(this.hiddenLayerNodes).fill(0));
 
         //set input nodes
         nodes[0] = inputs;
@@ -105,7 +105,7 @@ export class NeuralNet {
 
             //process each neuron
             for (let j = 0; j < nodes[i].length; j++) {
-                nodes[i][j] = this.processNeuron(weights.map(n=>n[j]), nodes[i - 1], biases[j]);
+                nodes[i][j] = this.processNeuron(weights[j], nodes[i - 1], biases[j]);
             }
         }
 

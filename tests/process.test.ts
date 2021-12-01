@@ -12,12 +12,12 @@ const netOptions = {
     learningRate: 0.5,
     weights: [
         [
-            [0.15, 0.25],
-            [0.20, 0.30]
+            [0.15, 0.20],
+            [0.25, 0.30]
         ],
         [
-            [0.40, 0.50],
-            [0.45, 0.55]
+            [0.40, 0.45],
+            [0.50, 0.55]
         ]
     ],
     biases: [
@@ -41,5 +41,5 @@ test("Error Evaluation", () => {
 test("Backpropagation", () => {
     const net = new NeuralNet(netOptions);
     net.backpropagate([0.05, 0.10], [0.01, 0.99]);
-    expect(net.getError([0.05, 0.10], [0.01, 0.99])).toBe(0.29660702571299);
+    expect(net.getError([0.05, 0.10], [0.01, 0.99])).toBe(0.2910277743228536);
 });
