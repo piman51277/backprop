@@ -56,7 +56,7 @@ export class NeuralNet {
         ];
 
         this.biases = options.biases || [
-            this.generateRandomBiases(this.hiddenLayerNodes),
+            ...new Array(this.hiddenLayers).fill(0).map(() => this.generateRandomBiases(this.hiddenLayerNodes)),
             this.generateRandomBiases(this.outputLayerNodes),
         ];
     }
@@ -83,7 +83,7 @@ export class NeuralNet {
 
     //forward pass
     private forwardPass(inputs: number[]): Nodes {
-        
+
         if (inputs.length !== this.inputLayerNodes) {
             throw new Error(`Inputs do not match input layer nodes. ${inputs.length} !== ${this.inputLayerNodes}`);
         }
@@ -109,7 +109,7 @@ export class NeuralNet {
 
             //process each neuron
             for (let j = 0; j < nodes[i].length; j++) {
-                nodes[i][j] = this.processNeuron(weights.map(n=>n[j]), nodes[i - 1], biases[j]);
+                nodes[i][j] = this.processNeuron(weights.map(n => n[j]), nodes[i - 1], biases[j]);
             }
         }
 
@@ -170,7 +170,7 @@ export class NeuralNet {
             for (let j = 0; j < this.hiddenLayerNodes; j++) {
 
                 //get partial product
-                partialNodes[i][j] = this.weights[i].map(n => n[j]).map((weight, index) => weight * partialNodes[i + 1][index]).reduce((a, b) => a + b);
+                partialNodes[i][j] = this.weights[i][j].map((weight, index) => weight * partialNodes[i + 1][index]).reduce((a, b) => a + b);
 
                 for (let k = 0; k < this.hiddenLayerNodes; k++) {
                     gradient[i - 1][j][k] = partialNodes[i][j] * this.activationFunctionPrime(nodes[i][k]) * nodes[i - 1][k];
@@ -184,7 +184,7 @@ export class NeuralNet {
             //get partial product
             partialNodes[1][j] = this.weights[1][j].map((weight, index) => weight * partialNodes[2][index]).reduce((a, b) => a + b);
 
-            for (let k = 0; k < this.inputLayerNodes; k++) {    
+            for (let k = 0; k < this.inputLayerNodes; k++) {
                 gradient[0][k][j] = partialNodes[1][j] * this.activationFunctionPrime(nodes[1][k]) * nodes[0][k];
             }
         }
