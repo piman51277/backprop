@@ -89,7 +89,11 @@ export class NeuralNet {
         }
 
         //initialize nodes
-        const nodes: Nodes = new Array(this.hiddenLayers + 2).fill(0).map(() => new Array(this.hiddenLayerNodes).fill(0));
+        const nodes: Nodes = [
+            new Array(this.inputLayerNodes).fill(0),
+            ...new Array(this.hiddenLayers).fill(0).map(() => new Array(this.hiddenLayerNodes).fill(0)),
+            new Array(this.outputLayerNodes).fill(0)
+        ];
 
         //set input nodes
         nodes[0] = inputs;
@@ -105,7 +109,7 @@ export class NeuralNet {
 
             //process each neuron
             for (let j = 0; j < nodes[i].length; j++) {
-                nodes[i][j] = this.processNeuron(weights[j], nodes[i - 1], biases[j]);
+                nodes[i][j] = this.processNeuron(weights.map(n=>n[j]), nodes[i - 1], biases[j]);
             }
         }
 
@@ -143,7 +147,11 @@ export class NeuralNet {
         ];
 
         //setup partial product nodes
-        const partialNodes: Nodes = new Array(this.hiddenLayers + 2).fill(0).map(() => new Array(this.hiddenLayerNodes).fill(0));
+        const partialNodes: Nodes = [
+            new Array(this.inputLayerNodes).fill(0),
+            ...new Array(this.hiddenLayers).fill(0).map(() => new Array(this.hiddenLayerNodes).fill(0)),
+            new Array(this.outputLayerNodes).fill(0)
+        ];
 
         //get the gradient for the last layer of weights
 
@@ -151,14 +159,14 @@ export class NeuralNet {
         partialNodes[partialNodes.length - 1] = netOutput.map((output, index) => (output - targetOutput[index]) * this.activationFunctionPrime(output));
 
         //get the gradient for the last layer of weights
-        for (let i = 0; i < this.outputLayerNodes; i++) {
-            for (let j = 0; j < this.hiddenLayerNodes; j++) {
-                gradient[gradient.length - 1][i][j] = partialNodes[partialNodes.length - 1][i] * nodes[nodes.length - 2][j];
+        for (let i = 0; i < this.hiddenLayerNodes; i++) {
+            for (let j = 0; j < this.outputLayerNodes; j++) {
+                gradient[gradient.length - 1][i][j] = partialNodes[partialNodes.length - 1][j] * nodes[nodes.length - 2][i];
             }
         }
 
         //get the gradient for the hidden layers
-        for (let i = this.hiddenLayers; i >= 1; i--) {
+        for (let i = this.hiddenLayers; i > 1; i--) {
             for (let j = 0; j < this.hiddenLayerNodes; j++) {
 
                 //get partial product
@@ -167,6 +175,17 @@ export class NeuralNet {
                 for (let k = 0; k < this.hiddenLayerNodes; k++) {
                     gradient[i - 1][j][k] = partialNodes[i][j] * this.activationFunctionPrime(nodes[i][k]) * nodes[i - 1][k];
                 }
+            }
+        }
+
+        //get the gradient for the input layer
+        for (let j = 0; j < this.hiddenLayerNodes; j++) {
+
+            //get partial product
+            partialNodes[1][j] = this.weights[1][j].map((weight, index) => weight * partialNodes[2][index]).reduce((a, b) => a + b);
+
+            for (let k = 0; k < this.inputLayerNodes; k++) {    
+                gradient[0][k][j] = partialNodes[1][j] * this.activationFunctionPrime(nodes[1][k]) * nodes[0][k];
             }
         }
 
