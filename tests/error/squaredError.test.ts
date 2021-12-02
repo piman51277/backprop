@@ -1,4 +1,4 @@
-import {squaredError} from "../../src/util/error/squaredError";
+import {squaredError} from "../../src/error/squaredError";
 
 test("squaredError",()=>{
     expect(squaredError([1,2,3,4,5],[1,2,3,4,5])).toBe(0);

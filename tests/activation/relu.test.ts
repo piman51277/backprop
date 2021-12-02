@@ -1,4 +1,4 @@
-import {relu, reluPrime} from '../../src/util/activation/relu';
+import {relu, reluPrime} from '../../src/activation/relu';
 
 test("relu x = 0", () => {
     expect(relu(0)).toBe(0);

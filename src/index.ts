@@ -1,6 +1,7 @@
-import {NeuralNet} from "./classes/NeuralNet";
-import {sigmoid, sigmoidPrime} from "./util/activation/sigmoid";
-import {relu, reluPrime} from "./util/activation/relu";
-import {squaredError} from "./util/error/squaredError";
+import { NeuralNet } from "./classes/NeuralNet";
+import { sigmoid, sigmoidPrime } from "./activation/sigmoid";
+import { relu, reluPrime } from "./activation/relu";
+import { squaredError } from "./error/squaredError";
+import { trainNet, TrainingSetEntry, TrainingSet } from "./training/trainNet";
 
-export {NeuralNet, sigmoid, sigmoidPrime, relu, reluPrime, squaredError};
+export { NeuralNet, sigmoid, sigmoidPrime, relu, reluPrime, squaredError, trainNet, TrainingSetEntry, TrainingSet };

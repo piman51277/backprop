@@ -1,5 +1,5 @@
-import { sigmoid, sigmoidPrime } from '../util/activation/sigmoid';
-import { squaredError } from '../util/error/squaredError';
+import { sigmoid, sigmoidPrime } from '../activation/sigmoid';
+import { squaredError } from '../error/squaredError';
 
 type Weights = number[][][];
 type Biases = number[][];

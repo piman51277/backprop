@@ -1,4 +1,4 @@
-import { NeuralNet } from '../../classes/NeuralNet';
+import { NeuralNet } from '../classes/NeuralNet';
 
 export type TrainingSetEntry = {
     input: number[],

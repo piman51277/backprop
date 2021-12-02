@@ -1,4 +1,4 @@
-import {sigmoid, sigmoidPrime} from '../../src/util/activation/sigmoid';
+import {sigmoid, sigmoidPrime} from '../../src/activation/sigmoid';
 
 
 test("sigmoid x = 0",()=>{

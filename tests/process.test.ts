@@ -1,6 +1,6 @@
 import { NeuralNet } from '../src/classes/NeuralNet';
-import { squaredError } from "../src/util/error/squaredError";
-import { sigmoidPrime, sigmoid } from "../src/util/activation/sigmoid";
+import { squaredError } from "../src/error/squaredError";
+import { sigmoidPrime, sigmoid } from "../src/activation/sigmoid";
 
 
 
